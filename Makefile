@@ -204,52 +204,63 @@ _init:
 
 ifneq (${DEB_VER},)
 
+DEB_DEPS += aspell
+DEB_DEPS += build-essential
+DEB_DEPS += libgnutls28-dev
+DEB_DEPS += zlib1g-dev
+DEB_DEPS += libncurses5-dev
+DEB_DEPS += texinfo
+DEB_DEPS += libjansson4
+DEB_DEPS += libjansson-dev
+DEB_DEPS += libgccjit0
+DEB_DEPS += libgccjit-${GCC_VER}-dev
+DEB_DEPS += gcc-${GCC_VER}
+DEB_DEPS += g++-${GCC_VER}
+DEB_DEPS += autoconf
+DEB_DEPS += automake
+DEB_DEPS += pkg-config
+DEB_DEPS += shared-mime-info
+DEB_DEPS += sharutils
+DEB_DEPS += uuid-dev
+DEB_DEPS += libtool
+DEB_DEPS += libpcre2-dev
+DEB_DEPS += libpcre2-posix3
+DEB_DEPS += liblzma-dev
+DEB_DEPS += liblzo2-2
+DEB_DEPS += liblockfile-dev
+DEB_DEPS += libgpm-dev
+DEB_DEPS += libdeflate-dev
+DEB_DEPS += intltool-debian
+DEB_DEPS += autopoint
+DEB_DEPS += libasprintf-dev
+DEB_DEPS += libgettextpo-dev
+DEB_DEPS += cargo
+
 debian-deps:
-	sudo apt install \
-		aspell \
-		build-essential \
-		libgnutls28-dev \
-		zlib1g-dev \
-		libncurses5-dev \
-		texinfo \
-		libjansson4 \
-		libjansson-dev \
-		libgccjit0 \
-		libgccjit-${GCC_VER}-dev \
-		gcc-${GCC_VER} \
-		g++-${GCC_VER} \
-		autoconf \
-		automake \
-		pkg-config \
-		shared-mime-info \
-		sharutils \
-		uuid-dev \
-		libtool \
-		libpcre2-dev \
-		libpcre2-posix3 \
-		liblzma-dev \
-		liblzo2-2 \
-		liblockfile-dev \
-		libgpm-dev \
-		libdeflate-dev \
-		intltool-debian \
-		autopoint \
-		libasprintf-dev \
-		libgettextpo-dev
+	@echo "# run the following apt install command?"
+	@echo "sudo apt install ${DEB_DEPS}"
+	@echo
+	@read -r -n 1 -p "# <ctrl+c> to interrupt, <enter> to continue... " \
+		&& sudo apt install ${DEB_DEPS}
+
+DEB_DEPS_X += libgtk-3-dev
+DEB_DEPS_X += libtiff5-dev
+DEB_DEPS_X += libgif-dev
+DEB_DEPS_X += libjpeg-dev
+DEB_DEPS_X += libpng-dev
+DEB_DEPS_X += libxpm-dev
+DEB_DEPS_X += libx11-dev
+DEB_DEPS_X += libmagickcore-dev
+DEB_DEPS_X += libmagick++-dev
+DEB_DEPS_X += libgtk-3-dev
+DEB_DEPS_X += libwebkit2gtk-4.0-dev
 
 debian-deps-with-x:
-	sudo apt install \
-		libgtk-3-dev \
-		libtiff5-dev \
-		libgif-dev \
-		libjpeg-dev \
-		libpng-dev \
-		libxpm-dev \
-		libx11-dev \
-		libmagickcore-dev \
-		libmagick++-dev \
-		libgtk-3-dev \
-		libwebkit2gtk-4.0-dev
+	@echo "# run the following apt install command?"
+	@echo "sudo apt install ${DEB_DEPS_X}"
+	@echo
+	@read -r -n 1 -p "# <ctrl+c> to interrupt, <enter> to continue... " \
+		&& sudo apt install ${DEB_DEPS_X}
 
 endif
 
