@@ -418,13 +418,13 @@ qxemacs-sh: _init
 qide-sh: DST=${USR_PATH}/bin/qide
 qide-sh: _init
 	@echo "# creating: ${DST}"
-	@$(call _make_template,_common_q,qide,${DST})
+	@$(call _make_template,_common_ide,qide,${DST})
 	@chmod +x ${DST}
 
 qxide-sh: DST=${USR_PATH}/bin/qxide
 qxide-sh: _init
 	@echo "# creating: ${DST}"
-	@$(call _make_template,_common_q,qxide,${DST})
+	@$(call _make_template,_common_ide,qxide,${DST})
 	@chmod +x ${DST}
 
 scripts: emacs-sh xemacs-sh qemacs-sh qxemacs-sh
