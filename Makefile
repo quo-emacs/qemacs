@@ -60,8 +60,8 @@ EMACS_CFLAGS := -O3 \
     -fassociative-math -fno-signed-zeros -frename-registers -funroll-loops \
     -mtune=native -march=native -fomit-frame-pointer
 
-EMACS_BIN       := ${USR_PATH}/bin/emacs-${EMACS_VERSION}
-EMACSCLIENT_BIN := ${USR_PATH}/bin/emacsclient
+EMACS_BIN        ?= ${USR_PATH}/bin/emacs-${EMACS_VERSION}
+EMACSCLIENT_BIN  ?= ${USR_PATH}/bin/emacsclient
 
 INSTALL_BIN_PATH ?= /usr/local/bin
 ALL_BIN_FILES    += ctags etags ebrowse
