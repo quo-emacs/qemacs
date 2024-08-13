@@ -14,7 +14,7 @@
 # this program; if not, write to the Free Software Foundation, Inc., 51 Franklin
 # Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
-SCRIPT_NAME="$(basename $0)"
+SCRIPT_NAME="$(basename "$0")"
 SCRIPT_PATH=$(cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd)
 export SCRIPT_NAME SCRIPT_PATH
 
