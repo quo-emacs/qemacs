@@ -34,18 +34,45 @@ QEMACS_NAMES=($(echo "${SCRIPT_NAME}" | perl -pe 's!\-\-! !g;s!\n! !g;s!\s+! !g;
 
 if [ ${#QEMACS_NAMES[@]} -gt 1 ]
 then
-    #: prune the actual script name (first word)
+    #: correct the actual script name (is the first word)
     export QEMACS_NAME="${QEMACS_NAMES[0]}"
+    #: prune the actual script name (not the first word)
     QEMACS_NAMES=(${QEMACS_NAMES[@]:1})
-    if [ ${#QEMACS_NAMES[@]} -eq 1 ]
+    #: check for optional settings
+    if echo "${QEMACS_NAMES[@]}" | grep -q -E '[psw]\-[a-zA-Z0-9][_a-zA-Z]*'
     then
-        #: one segment means qemacs--<server>
-        export QEMACS_SERVER="${QEMACS_NAMES[0]}"
-    elif [ ${#QEMACS_NAMES[@]} -ge 2 ]
-    then
-        #: two segments means qemacs--<profile>--<server>
-        export QEMACS_PROFILE="${QEMACS_NAMES[0]}"
-        export QEMACS_SERVER="${QEMACS_NAMES[1]}"
+        for NAME in "${QEMACS_NAMES[@]}"
+        do
+            KEY=$(echo "${NAME}" | perl -pe 's!^([psw])\-.+?$!${1}!')
+            VALUE=$(echo "${NAME}" | perl -pe 's!^[psw]\-(.+?)$!${1}!')
+            case "${KEY}" in
+                "p") export QEMACS_PROFILE="${VALUE}";;
+                "s") export QEMACS_SERVER="${VALUE}";;
+                "w") export QEMACS_WORKSPACE="${VALUE}";;
+                *)
+                    echo "unsupported option: ${NAME}" 1>&2
+                    exit 1
+                    ;;
+            esac
+        done
+    else
+        #: check for positional settings
+        if [ ${#QEMACS_NAMES[@]} -eq 1 ]
+        then
+            #: one segment means qide--<workspace>
+            export QEMACS_WORKSPACE="${QEMACS_NAMES[0]}"
+        elif [ ${#QEMACS_NAMES[@]} -ge 2 ]
+        then
+            #: two segments means qide--<workspace>--<profile>
+            export QEMACS_WORKSPACE="${QEMACS_NAMES[0]}"
+            export QEMACS_PROFILE="${QEMACS_NAMES[1]}"
+        elif [ ${#QEMACS_NAMES[@]} -ge 3 ]
+        then
+            #: two segments means qide--<workspace>--<profile>--<server>
+            export QEMACS_WORKSPACE="${QEMACS_NAMES[0]}"
+            export QEMACS_PROFILE="${QEMACS_NAMES[1]}"
+            export QEMACS_SERVER="${QEMACS_NAMES[2]}"
+        fi
     fi
 fi
 
@@ -65,7 +92,7 @@ export QEMACS_PROFILE=${QEMACS_PROFILE:=qemacs}
 export QEMACS_SERVER=${QEMACS_SERVER:=${QEMACS_NAME}}
 
 #: startup with named workspace
-export QEMACS_WORKSPACE=${QEMACS_SERVER:=default}
+export QEMACS_WORKSPACE=${QEMACS_WORKSPACE:=default}
 
 SCRIPT_VERBOSE=0
 
@@ -76,7 +103,8 @@ while [ $# -gt 0 ]
 do
     case "$1" in
         "-h")
-            echo "usage: $(basename $0) [options]"
+            NAME=$(basename "$0")
+            echo "usage: ${NAME} [options]"
             echo
             echo "options:"
             echo
@@ -88,6 +116,18 @@ do
             echo "  -v | --verbose             display script settings"
             echo
             echo "Arguments after a -- flag are passed unmodified to emacs."
+            echo
+            echo "shortcuts:"
+            echo
+            echo "  ln -sv ${NAME} qide--<workspace>"
+            echo "  ln -sv ${NAME} qide--<workspace>--<profile>"
+            echo "  ln -sv ${NAME} qide--<workspace>--<profile>--<server>"
+            echo
+            echo "  where:"
+            echo "    <workspace>  is an emacs workspace"
+            echo "    <profile>    is an emacs ~/.<name>.d profile"
+            echo "    <server>     is a custom server name to use"
+            echo "    values       must satisfy: [a-zA-Z0-9][_a-zA-Z0-9]*"
             echo
             exit 0
             ;;
