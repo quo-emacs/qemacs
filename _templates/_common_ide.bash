@@ -61,11 +61,13 @@ then
         then
             #: one segment means qide--<workspace>
             export QEMACS_WORKSPACE="${QEMACS_NAMES[0]}"
+            export QEMACS_SERVER="${QEMACS_NAMES[0]}"
         elif [ ${#QEMACS_NAMES[@]} -ge 2 ]
         then
             #: two segments means qide--<workspace>--<profile>
             export QEMACS_WORKSPACE="${QEMACS_NAMES[0]}"
             export QEMACS_PROFILE="${QEMACS_NAMES[1]}"
+            export QEMACS_SERVER="${QEMACS_NAMES[0]}"
         elif [ ${#QEMACS_NAMES[@]} -ge 3 ]
         then
             #: two segments means qide--<workspace>--<profile>--<server>
@@ -128,6 +130,8 @@ do
             echo "    <profile>    is an emacs ~/.<name>.d profile"
             echo "    <server>     is a custom server name to use"
             echo "    values       must satisfy: [a-zA-Z0-9][_a-zA-Z0-9]*"
+            echo
+            echo "  note: when server not specified, workspace is also server name."
             echo
             exit 0
             ;;
