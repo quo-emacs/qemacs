@@ -77,7 +77,7 @@ then
 fi
 
 #: path to qemacs installation
-QEMACS_PATH=$(dirname $(dirname "${SCRIPT_PATH}"))
+QEMACS_PATH=$(dirname "$(dirname "${SCRIPT_PATH}")")
 export QEMACS_PATH
 
 #: debugging is not setup by default
@@ -102,7 +102,7 @@ SCRIPT_VERBOSE=0
 while [ $# -gt 0 ]
 do
     case "$1" in
-        "-h")
+        "-h"|"--help")
             NAME=$(basename "$0")
             echo "usage: ${NAME} [options]"
             echo
@@ -111,11 +111,11 @@ do
             echo "  -w | --workspace=<name>    startup with workspace <name>"
             echo "  -p | --profile=<name>      use ~/.<name>.d"
             echo "  -s | --server=<name>       specify server <name>"
-            echo "  -d | --debug               debug-on-error t"
-            echo "  -D | --debug-init          debug-on-error t, with --debug-init"
+            echo "  -d | --debug               set debug-on-error t"
+            echo "  -D | --debug-init          use --debug-init (implies --debug)"
             echo "  -v | --verbose             display script settings"
             echo
-            echo "Arguments after a -- flag are passed unmodified to emacs."
+            echo "  Use \"${NAME} -- --help\" for actual emacs command line help"
             echo
             echo "shortcuts:"
             echo
